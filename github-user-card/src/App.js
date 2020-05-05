@@ -5,56 +5,34 @@ import Users from "./users";
 import LambdaLogo from "./lambdalogo.png";
 import GithubLogo from "./githublogo.png";
 
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: [],
-      followers: [],
-      test: [],
-      info: []
+      self: "",
+      followers: []
     };
   }
 
   componentDidMount() {
     axios
-      .get("https://api.github.com/users/KateAnn19")
+      .get("https://cors-anywhere.herokuapp.com/https://api.github.com/users/KateAnn19")
       .then(res => {
         this.setState({
-          users: res.data
+         self: res.data
         })
-      return this.state.users
       })
       .catch(err => console.log(err.message));
 
 
       axios
-      .get("https://api.github.com/users/KateAnn19/followers")
+      .get("https://cors-anywhere.herokuapp.com/https://api.github.com/users/KateAnn19/followers")
       .then(res => {
-
         this.setState({
           followers: res.data
         })
-        return this.state.followers
       })
-       
-       .then(result => {
-        console.log("RESULT RESULT RESULT", result)
-        result.map(foll => {
-          axios
-          .get(foll.url)
-          .then(res => {
-            console.log('RES RES RES!!!!!', res)
-            let newArray = []
-            newArray.push(res)
-            console.log("!!!!!!!!!!!!!!!!!!!!", newArray)
-            this.setState({
-              info: [res.data]
-            })
-          })
-        })
-      })
-             
       .catch(err => console.log(err.message));
   }
 
@@ -76,9 +54,8 @@ class App extends React.Component {
           <img src={GithubLogo} alt="GitHub Logo" />
         </div>
         <Users 
-        usersInfo={this.state.users} 
+        usersInfo={this.state.self} 
         //location={this.state.location}
-        test={this.state.info}
         followersInfo={this.state.followers}
         //url={this.state.url} 
         //bios={this.state.bios}
