@@ -1,7 +1,8 @@
 import React from "react";
+import axios from "axios";
 
 const Users = props => {
-    console.log(props)
+    console.log("PROPSPROPSPORPS",props)
   
   return (
     <div className="cards">
@@ -21,13 +22,13 @@ const Users = props => {
         </div>
       </div>
 
+
+
+
+
       {props.followersInfo.map(follower => (
 
-        
-
-
-
-        <div key={follower.id} className="card">
+          <div key={follower.id} className="card">
           <div className="card-info">
             <img src={follower.avatar_url} alt={follower.login} />
             <h3 className="name">Name</h3>
@@ -38,6 +39,9 @@ const Users = props => {
             <p>Following: </p>
           </div>
         </div>
+        
+
+
       ))}
 
 {/* {props.bios.map(bio => (

@@ -11,74 +11,50 @@ class App extends React.Component {
     this.state = {
       users: [],
       followers: [],
-      moreInfo: [],
-      followersInfo: '',
-      followingInfo: '',
-      // bios:'',
-      name: '',
-      location: '',
-      Followers: '',
-      following: ''
+      test: [],
+      info: []
     };
   }
 
   componentDidMount() {
-
-
     axios
       .get("https://api.github.com/users/KateAnn19")
       .then(res => {
         this.setState({
           users: res.data
-        });
+        })
+      return this.state.users
       })
       .catch(err => console.log(err.message));
-
-
-
 
 
       axios
       .get("https://api.github.com/users/KateAnn19/followers")
       .then(res => {
-        console.log('this is response from followers', res)
-        res.data.map(followers => (
-           
 
-
-
-
-           axios
-            .get(followers.url)
-            .then(response => {
-             console.log("this is response", response)
-            //  response.map(foll =>(
-
-               this.setState({
-              //  moreInfo: response.data,
-              //  followers: response.data.followers,
-               //following: response.data.following,
-               //location: response.data.location,
-               bios: response.data.bio,
-               name: response.data.name,
-               location: response.data.location,
-               Followers: response.data.followers,
-               following: response.data.following
-             })
-            })
-            .catch(err => console.log(err.message))
-
-        ))
-             
-            
-           
-        //))
-        
         this.setState({
-          followers: res.data,
-          moreInfo: res.data.followers
+          followers: res.data
+        })
+        return this.state.followers
+      })
+       
+       .then(result => {
+        console.log("RESULT RESULT RESULT", result)
+        result.map(foll => {
+          axios
+          .get(foll.url)
+          .then(res => {
+            console.log('RES RES RES!!!!!', res)
+            let newArray = []
+            newArray.push(res)
+            console.log("!!!!!!!!!!!!!!!!!!!!", newArray)
+            this.setState({
+              info: [res.data]
+            })
+          })
         })
       })
+             
       .catch(err => console.log(err.message));
   }
 
@@ -101,12 +77,11 @@ class App extends React.Component {
         </div>
         <Users 
         usersInfo={this.state.users} 
-        location={this.state.location}
-        followingNumbers={this.state.following}
-        followersNumbers={this.state.followers}
+        //location={this.state.location}
+        test={this.state.info}
         followersInfo={this.state.followers}
-        url={this.state.url} 
-        bios={this.state.bios}
+        //url={this.state.url} 
+        //bios={this.state.bios}
         Location={this.state.location}/>
       </div>
     );
@@ -114,3 +89,4 @@ class App extends React.Component {
 }
 
 export default App;
+
