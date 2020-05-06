@@ -1,33 +1,50 @@
 import React, { Component } from "react";
 import axios from "axios";
-import UserInfo from './UserInfo';
+import UserInfo from "./UserInfo";
+
+
 
 class Users extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      followersUrls: []
+      followersUrls: [],
+      followersInfo: []
     };
   }
-
-  // componentDidMount() {
-  //   axios
-  //     .get(
-  //       "https://cors-anywhere.herokuapp.com/https://api.github.com/users/KateAnn19/followers"
-  //     )
-  //     .then((res) => {
-  //       let info = [];
-  //       res.data.map(function (i) {
-  //         return info.push(i.url);
-  //       });
-
-  //       this.setState({
-  //         followersUrls: info
-  //       });
-  //     })
-  //     .catch((err) => console.log(err.message));
-
-  // }
+  
+  componentDidMount() {
+    axios
+      .get(
+        "https://cors-anywhere.herokuapp.com/https://api.github.com/users/KateAnn19/followers"
+      )
+      .then((res) => {
+        let info = [];
+        res.data.map(function (i) {
+          return info.push(i.url);
+        });
+        this.setState({
+          followersUrls: info,
+        });
+        let usrInfo = [];
+        this.state.followersUrls.map(function (url) {
+          axios
+            .get(`https://cors-anywhere.herokuapp.com/${url}`)
+            .then((res) => {
+             
+              //console.log("this is res", res.data);
+              usrInfo.push(res.data);
+              //console.log("!!!!", usrInfo);
+              this.setState({
+                followersInfo: usrInfo
+              });
+            })
+            .catch((err) => console.log(err.message));
+            return usrInfo
+        });
+      })
+      .catch((err) => console.log(err.message));
+  }
 
   render() {
     return (
@@ -61,7 +78,7 @@ class Users extends Component {
             </div>
           </div>
         ))}
-        <UserInfo info={this.state.followersUrls}/>
+        <UserInfo info={this.state.followersInfo} />
       </div>
     );
   }
