@@ -9,106 +9,105 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: [],
+      self: "",
       followers: [],
-      moreInfo: [],
-      followersInfo: '',
-      followingInfo: '',
-      // bios:'',
-      name: '',
-      location: '',
-      Followers: '',
-      following: ''
+      users:""
     };
+    this.handleChanges = this.handleChanges.bind(this);
+    this.fetchUsers = this.fetchUsers.bind(this);
   }
-
+  //https://cors-anywhere.herokuapp.com/
   componentDidMount() {
-
-
     axios
       .get("https://api.github.com/users/KateAnn19")
-      .then(res => {
+      .then((res) => {
         this.setState({
-          users: res.data
+          self: res.data,
         });
       })
-      .catch(err => console.log(err.message));
+      .catch((err) => console.log(err.message));
 
-
-
-
-
-      axios
+    axios
       .get("https://api.github.com/users/KateAnn19/followers")
-      .then(res => {
-        console.log('this is response from followers', res)
-        res.data.map(followers => (
-           
-
-
-
-
-           axios
-            .get(followers.url)
-            .then(response => {
-             console.log("this is response", response)
-            //  response.map(foll =>(
-
-               this.setState({
-              //  moreInfo: response.data,
-              //  followers: response.data.followers,
-               //following: response.data.following,
-               //location: response.data.location,
-               bios: response.data.bio,
-               name: response.data.name,
-               location: response.data.location,
-               Followers: response.data.followers,
-               following: response.data.following
-             })
-            })
-            .catch(err => console.log(err.message))
-
-        ))
-             
-            
-           
-        //))
-        
+      .then((res) => {
+        // res.data.map(function (i) {
+        //   return info.push(i.url);
+        // });
         this.setState({
+          ...this.state,
           followers: res.data,
-          moreInfo: res.data.followers
-        })
+        });
+        // let usrInfo = [];
+        // this.state.followers.map(function (follower) {
+        //   axios
+        //     .get(`${follower.url}`)
+        //     .then((res) => {
+        //       console.log("this is response", res.data.followers);
+        //       usrInfo.push({followers: res.data.followers, location: res.data.location, following: res.data.following, bio: res.data.bio, name:res.data.name});
+        //       console.log("This is user info",usrInfo)
+        //       this.setState({
+        //         ...this.state,
+        //         individualInfo: usrInfo,
+        //       });
+        //     })
+        //     .catch((err) => console.log(err.message));
+        //   return usrInfo;
+        // });
       })
-      .catch(err => console.log(err.message));
+      .catch((err) => console.log(err.message));
   }
 
   // you can chain your axio calls to map through your friends and map again to set their url in a state array for you to use. Then you can map that state array exactly how you did your own card
 
-//map.axios friends
-//map.axios friends again
-//set url in state array
-//map through state array 
+  handleChanges = e => {
+    this.setState({
+      user: e.target.value
+    });
+  };
+
+  fetchUsers = e => {
+    e.preventDefault();
+    axios
+      .get(`https://api.github.com/users/${this.state.user}`)
+      .then(response => {
+        console.log(response.data);
+        //response.data.message (an array)
+        this.setState({ self: response.data });
+
+        axios
+          .get(`https://api.github.com/users/${this.state.user}/followers`)
+          .then(response => {
+            this.setState({ ...this.state, followers: response.data });
+          })
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+  };
 
   render() {
     return (
       <div className="container">
         <div className="header">
-          <img src={LambdaLogo} alt="Lambda Logo" />
           <p>
-            <span>❤️'s</span>
+         <img src={LambdaLogo} alt={"Lambda"}/> <span>❤️'s</span> <img src={GithubLogo} alt={"Github"}/>
           </p>
-          <img src={GithubLogo} alt="GitHub Logo" />
         </div>
-        <Users 
-        usersInfo={this.state.users} 
-        location={this.state.location}
-        followingNumbers={this.state.following}
-        followersNumbers={this.state.followers}
-        followersInfo={this.state.followers}
-        url={this.state.url} 
-        bios={this.state.bios}
-        Location={this.state.location}/>
-      </div>
+        <div>
+          <input
+            type="text"
+            name=""
+            value={this.state.user}
+            onChange={this.handleChanges}
+          />
+          <button onClick={this.fetchUsers}>Display Users</button>
+        </div>
+        <Users
+          usersInfo={this.state.self}
+          followersInfo={this.state.followers}
+          individualInfo={this.state.individualInfo}
+          Location={this.state.location}
+        />
+        </div>
     );
   }
 }

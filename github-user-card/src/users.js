@@ -1,61 +1,52 @@
-import React from "react";
+import React, { Component } from "react";
 
-const Users = props => {
-    console.log(props)
+
+class Users extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {  
+    };
+  }
+  render() {
   
-  return (
-    <div className="cards">
-      <div className="card">
-        <div className="card-info">
-          <img
-            src={props.usersInfo.avatar_url}
-            alt={`${props.usersInfo.name}`}
-          />
-          <h3 className="name">{props.usersInfo.name}</h3>
-          <h2 className="username">{props.usersInfo.login}</h2>
-
-          <p>Location: {props.usersInfo.location}</p>
-          <p>Followers: {props.usersInfo.followers}</p>
-          <p>Following: {props.usersInfo.following}</p>
-          <p>Bio: {props.usersInfo.bio}</p>
-        </div>
-      </div>
-
-      {props.followersInfo.map(follower => (
-
-        
-
-
-
-        <div key={follower.id} className="card">
-          <div className="card-info">
-            <img src={follower.avatar_url} alt={follower.login} />
-            <h3 className="name">Name</h3>
-            <h2 className="username">{follower.login}</h2>
-            <p>Bio:{follower.bios}</p>
-            <p>Location: {props.location}</p>
-            <p>Followers: </p>
-            <p>Following: </p>
-          </div>
-        </div>
-      ))}
-
-{/* {props.bios.map(bio => (
-        <div>
-          <div>
-          <p>Bio: {bio.bio}</p>
-          </div>
-        </div>
-      ))} */}
-
+    return (
       
-          <div>
-            <p>Bio: {props.bio}</p>
+      <div className="cards">
+        <div className="card">
+        
+          <div className="card-info">
+            <img
+              src={this.props.usersInfo.avatar_url}
+              alt={`${this.props.usersInfo.name}`}
+            />
+            <h3 className="name">{this.props.usersInfo.name}</h3>
+            <h2 className="username">{this.props.usersInfo.login}</h2>
+
+            <p>Location: {this.props.usersInfo.location}</p>
+            <p>Followers: {this.props.usersInfo.followers}</p>
+            <p>Following: {this.props.usersInfo.following}</p>
+            <p>Bio: {this.props.usersInfo.bio}</p>
           </div>
-    </div>
-  );
-};
+        </div>
+        
+        {this.props.followersInfo.map((follower) => (
+          <div key={follower.id} className="card">
+            <div className="card-info">
+              <img src={follower.avatar_url} alt={follower.login} />
+              <h3 className="name">Name</h3>
+              <h2 className="username">{follower.login}</h2>
+              <p>Bio:{follower.bios}</p>
+              <p>Location: {this.props.location}</p>
+              <p>Followers: </p>
+              <p>Following: </p>
+            </div>
+          </div>
+        ))}
+        
+      </div>
+      
+    );
+  }
+}
 
 export default Users;
-
-
