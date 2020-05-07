@@ -11,7 +11,8 @@ class App extends React.Component {
     this.state = {
       self: "",
       followers: [],
-      users:""
+      users:"",
+      imgSrc:""
     };
     this.handleChanges = this.handleChanges.bind(this);
     this.fetchUsers = this.fetchUsers.bind(this);
@@ -55,6 +56,17 @@ class App extends React.Component {
         // });
       })
       .catch((err) => console.log(err.message));
+      axios
+      .get("https://api.github.com/users/KateAnn19/contributions")
+      .then((res) => {
+        console.log(res)
+        this.setState({
+          ...this.state,
+          imgSrc:res.data
+        });
+      })
+      .catch((err) => console.log(err.message));
+      
   }
 
   // you can chain your axio calls to map through your friends and map again to set their url in a state array for you to use. Then you can map that state array exactly how you did your own card
@@ -107,6 +119,7 @@ class App extends React.Component {
           individualInfo={this.state.individualInfo}
           Location={this.state.location}
         />
+        
         </div>
     );
   }

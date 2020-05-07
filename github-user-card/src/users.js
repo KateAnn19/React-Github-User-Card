@@ -28,6 +28,7 @@ class Users extends Component {
             <p>Bio: {this.props.usersInfo.bio}</p>
           </div>
         </div>
+        <img src={`https://ghchart.rshah.org/${this.props.usersInfo.login}`} alt="2016rshah's Github chart" />
         
         {this.props.followersInfo.map((follower) => (
           <div key={follower.id} className="card">
